@@ -1,5 +1,3 @@
-import atexit
-
 import async_helpers
 from indicator import Indicator
 from nmcli import get_connections, Connection
@@ -39,5 +37,4 @@ class DnsIndicator(Indicator):
 
 
 if __name__ == "__main__":
-    i = DnsIndicator(APPINDICATOR_ID)
-    atexit.register(lambda: i.quit())
+    DnsIndicator(APPINDICATOR_ID)
