@@ -1,6 +1,7 @@
 from typing import List
 
-from gnome_helpers import Indicator, Connection, async_call
+from gnome_dns_switcher.gnome_helpers import Indicator, Connection, async_call
+# from gnome_dns_switcher.gnome_helpers import Indicator, Connection, async_call
 from . import Server
 
 

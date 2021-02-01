@@ -1,14 +1,20 @@
+from os.path import isfile
 from typing import List
 
 import yaml
 
-from dnsswitcher import Server, DnsSwitcher
-from gnome_helpers.nmcli import get_connections
+from gnome_dns_switcher.gnome_helpers import get_connections
+from gnome_dns_switcher.switcher import Server, DnsSwitcher
 
 APPINDICATOR_ID = 'dns_switcher'
 
 
 def main():
+    config_file = 'config.yml'
+    if not isfile(config_file):
+        print('File config.yml not found. Please create it and run again.')
+        exit(1)
+
     with open('config.yml', 'r') as config_file:
         config = yaml.safe_load(config_file)
         servers: List[Server] = []
