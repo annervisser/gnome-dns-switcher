@@ -4,8 +4,8 @@ from typing import List
 
 import yaml
 
-from gnome_helpers import get_connections
-from switcher import Server, DnsSwitcher
+from .gnome_helpers import get_connections
+from .switcher import Server, DnsSwitcher
 
 APPINDICATOR_ID = 'gnome_dns_switcher'
 
