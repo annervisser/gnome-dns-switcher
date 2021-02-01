@@ -6,7 +6,7 @@
 sudo pip3 install gnome-dns-switcher
 ```
 
-- Create a config.yml, see #Config
+- Create a config.yml, see [Config](#config)
 
 ## Running
 
