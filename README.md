@@ -2,7 +2,8 @@
 
 ## Setup
 ```shell
-pip3 install gnome-dns-switcher
+# sudo so the script is added to $PATH, you can also install normally and fix $PATH :)
+sudo pip3 install gnome-dns-switcher
 ```
 
 - Create a config.yml, see #Config
