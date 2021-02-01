@@ -1,19 +1,16 @@
 # Gnome appindicator dns switcher
 
 ## Setup
-
 ```shell
-# Copy sample config
-cp config.sample.yml config.yml
-
-# Adjust your configuration
-edit config.yml
+pip3 install gnome-dns-switcher
 ```
+
+- Create a config.yml, see #Config
 
 ## Running
 
 ```shell
-python3 __main__.py
+gnome-dns-switcher --config /path/to/config.yml
 ```
 
 ## Config
@@ -48,7 +45,9 @@ devices:
 
 ### You possibly need to install these dependencies
 
+```shell
 sudo apt install python3-gi python3-gi-cairo gir1.2-gtk-3.0
+```
 
 ### Useful links
 

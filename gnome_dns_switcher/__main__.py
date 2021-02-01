@@ -1,21 +1,27 @@
+import argparse
 from os.path import isfile
 from typing import List
 
 import yaml
 
-from gnome_dns_switcher.gnome_helpers import get_connections
-from gnome_dns_switcher.switcher import Server, DnsSwitcher
+from gnome_helpers import get_connections
+from switcher import Server, DnsSwitcher
 
-APPINDICATOR_ID = 'dns_switcher'
+APPINDICATOR_ID = 'gnome_dns_switcher'
 
 
 def main():
-    config_file = 'config.yml'
-    if not isfile(config_file):
-        print('File config.yml not found. Please create it and run again.')
-        exit(1)
+    parser = argparse.ArgumentParser(description='Gnome Dns Switcher')
+    parser.add_argument("--config", dest="config", required=False, default="./config.yml",
+                        help="Path to config yaml", metavar="FILE",
+                        type=lambda x:
+                        x if isfile(x)
+                        else parser.error("Specified config file ({}) is not a file. "
+                                          "Create it or specify a different path with --config".format(x)))
 
-    with open('config.yml', 'r') as config_file:
+    args = parser.parse_args()
+
+    with open(args.config, 'r') as config_file:
         config = yaml.safe_load(config_file)
         servers: List[Server] = []
         for name, ips in config.get('servers', {}).items():
