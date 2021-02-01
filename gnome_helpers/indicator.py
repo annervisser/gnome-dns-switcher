@@ -1,4 +1,3 @@
-import atexit
 from typing import List
 
 import gi
@@ -10,7 +9,6 @@ gi.require_version("Gtk", "3.0")
 from gi.repository import Gtk
 
 gi.require_version("GLib", "2.0")
-from gi.repository import GLib
 
 gi.require_version('Notify', '0.7')
 from gi.repository import Notify
@@ -21,22 +19,23 @@ class Indicator:
     menu: Gtk.Menu
     notifications: List[Notify.Notification] = []
 
-    def __init__(self, APPINDICATOR_ID):
-        atexit.register(self.quit)
+    def __init__(self, application_id: str):
         # noinspection PyArgumentList
         # Using appindicator.Indicator() results in SIGSEGV
-        self.indicator = appindicator.Indicator.new(APPINDICATOR_ID, 'server',
+        self.indicator = appindicator.Indicator.new(application_id, 'server',
                                                     appindicator.IndicatorCategory.COMMUNICATIONS)
         self.indicator.set_status(appindicator.IndicatorStatus.ACTIVE)
+        Notify.init(application_id)
         self.menu = Gtk.Menu()
 
         # INIT
         self.init_indicator()
 
-        self.add_menu_item('Quit', self.__quit)
+        self.add_menu_item('Quit', Gtk.main_quit)
         self.menu.show_all()
         self.indicator.set_menu(self.menu)
-        Notify.init(APPINDICATOR_ID)
+
+        self.menu.connect('destroy', self.__cleanup)
         Gtk.main()
 
     def init_indicator(self):
@@ -50,9 +49,9 @@ class Indicator:
         self.menu.append(item)
         return item
 
-    def notify(self, title: str, message: str):
+    def notify(self, title: str, message: str, icon: str = 'server'):
         self.__clear_notifications()
-        n = Notify.Notification().new(title, message, 'server')
+        n = Notify.Notification().new(title, message, icon)
         n.show()
         self.notifications.append(n)
 
@@ -60,12 +59,6 @@ class Indicator:
         for n in self.notifications:
             n.close()
 
-    def quit(self):
-        # Make sure to run in GLib context
-        GLib.idle_add(lambda: self.__quit())
-
-    def __quit(self):
-        atexit.unregister(self.quit)
+    def __cleanup(self):
         self.__clear_notifications()
         Notify.uninit()
-        Gtk.main_quit()

@@ -1,0 +1,8 @@
+servers:
+  CloudFlare: 1.1.1.1
+  Google DNS:
+    - 8.8.8.8
+    - 8.8.4.4
+  localhost: 127.0.0.1, 127.0.1.1
+devices:
+  - wlp2s0
