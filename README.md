@@ -1,4 +1,5 @@
 # Gnome appindicator dns switcher
+https://pypi.org/project/gnome-dns-switcher/
 
 ## Setup
 ```shell
