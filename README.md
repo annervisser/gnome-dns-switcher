@@ -3,8 +3,17 @@ https://pypi.org/project/gnome-dns-switcher/
 
 ## Setup
 ```shell
+# In case you don't have pip3:
+sudo apt install python3-pip
+
 # sudo so the script is added to $PATH, you can also install normally and fix $PATH :)
 sudo pip3 install gnome-dns-switcher
+
+# See config explanation
+edit ~/.config/gnome-dns-switcher.yml
+
+Add to startup applications:
+gnome-dns-switcher --config ~/.config/gnome-dns-switcher.yml
 ```
 
 - Create a config.yml, see [Config](#config)
