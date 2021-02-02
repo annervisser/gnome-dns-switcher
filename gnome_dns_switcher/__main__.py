@@ -23,7 +23,7 @@ def main():
 
     with open(args.config, 'r') as config_file:
         config = yaml.safe_load(config_file)
-        servers: List[Server] = []
+        servers: List[Server] = [Server('DHCP', None, True)]
         for name, ips in config.get('servers', {}).items():
             if not name or not ips:
                 continue
