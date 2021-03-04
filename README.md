@@ -57,7 +57,7 @@ devices:
 ### You possibly need to install these dependencies
 
 ```shell
-sudo apt install python3-gi python3-gi-cairo gir1.2-gtk-3.0
+sudo apt install python3-gi python3-gi-cairo gir1.2-gtk-3.0 gir1.2-appindicator3-0.1
 ```
 
 ### Useful links
