@@ -49,9 +49,13 @@ class DnsSwitcher(Indicator):
 
         def set_call():
             if server.dhcp:
+                conn.set_dns([])
                 conn.set_dns_auto_mode(True)
+                conn.reload_connection()
             else:
                 conn.set_dns(server.ips)
+                conn.set_dns_auto_mode(False)
+                conn.reload_connection()
 
         async_call(
             set_call,

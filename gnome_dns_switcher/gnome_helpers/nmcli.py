@@ -12,11 +12,8 @@ class Connection(NamedTuple):
         output = run_command('nmcli --get-values ip4.dns connection show {}'.format(self.uuid))
         return output.split(' | ')
 
-    def set_dns(self, dns: List[str], reload=True):
+    def set_dns(self, dns: List[str]):
         run_command('nmcli connection modify {} ipv4.dns "{}"'.format(self.uuid, ','.join(dns)))
-        self.set_dns_auto_mode(False)
-        if reload:
-            self.reload_connection()
 
     def get_dns_auto_mode(self):
         output = run_command('nmcli --get-values ipv4.ignore-auto-dns connection show {}'.format(self.uuid))
@@ -28,11 +25,9 @@ class Connection(NamedTuple):
             return True
         raise Exception('Invalid return value from dns auto mode')
 
-    def set_dns_auto_mode(self, auto: bool, reload=True):
+    def set_dns_auto_mode(self, auto: bool):
         run_command('nmcli connection modify {} ipv4.ignore-auto-dns {}'
                     .format(self.uuid, 'no' if auto else 'yes'))  # invert cause its ignore
-        if reload:
-            self.reload_connection()
 
     def reload_connection(self):
         run_command('nmcli connection up {}'.format(self.uuid))
