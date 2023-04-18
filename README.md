@@ -12,8 +12,15 @@ sudo pip3 install gnome-dns-switcher
 # See config explanation
 edit ~/.config/gnome-dns-switcher.yml
 
+# Start the app in the background
+gnome-dns-switcher --config ~/.config/gnome-dns-switcher.yml &
+```
+
+
 Add to startup applications:
-gnome-dns-switcher --config ~/.config/gnome-dns-switcher.yml
+```shell
+# Sleep 10 to prevent starting up before network connections have been made
+sleep 10 && gnome-dns-switcher --config ~/.config/gnome-dns-switcher.yml
 ```
 
 - Create a config.yml, see [Config](#config)
