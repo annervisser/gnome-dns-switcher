@@ -20,8 +20,7 @@ gnome-dns-switcher --config ~/.config/gnome-dns-switcher.yml &
 Add to startup applications:
 ```shell
 # Sleep 10 to prevent starting up before network connections have been made
-sleep 10 && gnome-dns-switcher --config ~/.config/gnome-dns-switcher.yml
-```
+bash -c 'sleep 10 && gnome-dns-switcher --config ~/.config/gnome-dns-switcher.yml'```
 
 - Create a config.yml, see [Config](#config)
 
