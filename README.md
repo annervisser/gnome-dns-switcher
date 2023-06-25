@@ -11,10 +11,14 @@ Gnome appindicator (toolbar icon) tool to quickly switch between different DNS s
 Supports multiple connections and switching them separately
 - Utility button to restart NetworkManager
 
-![Screenshot of menu with DNS servers](./screenshots/menu.png)
+![gds](https://github.com/annervisser/gnome-dns-switcher/assets/5613416/56e66264-5f35-4385-9a47-b8827906e631)
+
+
 
 <details>
-<summary>💻 More screenshots</summary>
+<summary>💻 Screenshots</summary>
+![](./screenshots/menu.png)
+
 
 #### Easily available in your toolbar
 ![](./screenshots/appindicator.png)
