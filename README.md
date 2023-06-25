@@ -1,6 +1,9 @@
 # Gnome appindicator dns switcher
 https://pypi.org/project/gnome-dns-switcher/
 
+![](https://img.shields.io/github/v/tag/annervisser/gnome-dns-switcher?style=for-the-badge&logo=github&label=GitHub&link=https%3A%2F%2Fgithub.com%2Fannervisser%2Fgnome-dns-switcher)
+![](https://img.shields.io/pypi/v/gnome-dns-switcher?style=for-the-badge&logo=python&logoColor=white&link=https%3A%2F%2Fpypi.org%2Fproject%2Fgnome-dns-switcher%2F)
+
 Gnome appindicator (toolbar icon) tool to quickly switch between different DNS servers
 - Easily available in your toolbox
 - Config file to specify DNS servers
