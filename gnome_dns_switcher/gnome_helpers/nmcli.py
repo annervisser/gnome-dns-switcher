@@ -32,6 +32,12 @@ class Connection(NamedTuple):
     def reload_connection(self):
         run_command('nmcli connection up {}'.format(self.uuid))
 
+    def reload_dns(self):
+        """
+        This is a clean way to reload DNS, but it requires root privileges
+        """
+        run_command('nmcli general reload dns-full {}'.format(self.uuid))
+
 
 def run_command(command: str, split_lines=False) -> str:
     cmd = subprocess.Popen(command, shell=True, stdout=subprocess.PIPE)

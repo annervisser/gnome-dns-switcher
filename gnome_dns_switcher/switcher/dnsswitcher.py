@@ -1,3 +1,4 @@
+import time
 from typing import List
 
 from gnome_dns_switcher.gnome_helpers import Indicator, Connection, async_call
@@ -28,6 +29,8 @@ class DnsSwitcher(Indicator):
 
                     self.add_menu_item(' - ' + server.name, self.switch_dns, conn, server)
 
+                self.add_separator()
+
                 if conn.get_dns_auto_mode():
                     indicator_label = 'DHCP'
 
@@ -37,15 +40,31 @@ class DnsSwitcher(Indicator):
         if not indicator_label:
             indicator_label = '???'
 
-        self.indicator.set_label(indicator_label, indicator_label)
+        self.set_label(indicator_label)
 
-        self.add_menu_item('Debug', self.debug)
+        self.add_separator()
+        self.add_menu_item('Reload', self.reload)
+        self.add_menu_item('Restart NW Manager', self.restart_nw_manager)
 
-    def debug(self):
-        pass
+    def restart_nw_manager(self):
+        from gnome_dns_switcher.gnome_helpers.nmcli import run_command
+        self.set_label('Restarting...')
+
+        def reload_call():
+            run_command('systemctl restart NetworkManager')
+            self.set_label('Reloading...')
+            time.sleep(5)
+
+        async_call(
+            reload_call,
+            lambda r, e: self.reload()
+        )
+
+    def reload(self):
+        self.close(42)
 
     def switch_dns(self, conn: Connection, server: Server):
-        self.indicator.set_label('...', '...')
+        self.set_label('...')
 
         def set_call():
             if server.dhcp:
@@ -75,5 +94,8 @@ class DnsSwitcher(Indicator):
         elif not server.dhcp and result_dns_ips != ', '.join(server.ips):
             self.notify("DNS Switcher", "Error switching, result doesn't match. Result: " + result_dns_ips, 'error')
         else:
-            self.indicator.set_label(server.name, server.name)
+            label = server.name
+            if len(self.connections) > 1:
+                label = "{0}: {1}".format(conn.name, label)
+            self.set_label(label)
             self.notify("DNS Switcher", f"Switched server to: [{server.name}] {result_dns_ips}", 'network-wired')

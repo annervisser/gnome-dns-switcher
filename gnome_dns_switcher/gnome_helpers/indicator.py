@@ -15,50 +15,71 @@ from gi.repository import Notify
 
 
 class Indicator:
-    indicator: appindicator.Indicator
-    menu: Gtk.Menu
-    notifications: List[Notify.Notification] = []
+    _return_code: int = 0
+    _application_id: str
+    _indicator: appindicator.Indicator = None
+    _menu: Gtk.Menu = None
+    _notifications: List[Notify.Notification] = []
 
     def __init__(self, application_id: str):
-        # noinspection PyArgumentList
-        # Using appindicator.Indicator() results in SIGSEGV
-        self.indicator = appindicator.Indicator.new(application_id, 'server',
-                                                    appindicator.IndicatorCategory.COMMUNICATIONS)
-        self.indicator.set_status(appindicator.IndicatorStatus.ACTIVE)
-        Notify.init(application_id)
-        self.menu = Gtk.Menu()
+        self._application_id = application_id
 
-        # INIT
+    def open(self):
+        if self._indicator:
+            raise AssertionError('Already open')
+
+        self._indicator = appindicator.Indicator.new(
+            self._application_id,
+            'server',
+            appindicator.IndicatorCategory.COMMUNICATIONS,
+        )
+        self._indicator.set_status(appindicator.IndicatorStatus.ACTIVE)
+        Notify.init(self._application_id)
+        self._menu = Gtk.Menu()
+
+        # Allow child implementation to set up its menu
         self.init_indicator()
 
         self.add_menu_item('Quit', Gtk.main_quit)
-        self.menu.show_all()
-        self.indicator.set_menu(self.menu)
+        self._menu.show_all()
+        self._indicator.set_menu(self._menu)
 
-        self.menu.connect('destroy', self.__cleanup)
+        self._menu.connect('destroy', self.__cleanup)  # This doesn't trigger when we quit ourselves
         Gtk.main()
+        self.__cleanup()
+        return self._return_code
 
     def init_indicator(self):
         raise NotImplementedError
 
     def add_menu_item(self, label: str, on_activate=None, *args):
-        item = Gtk.MenuItem()
-        item.set_label(label)
+        item = Gtk.MenuItem.new_with_label(label)
+
         if on_activate:
             item.connect('activate', lambda source, *a: on_activate(*a), *args)
-        self.menu.append(item)
-        return item
+        self._menu.append(item)
+
+    def add_separator(self):
+        self._menu.append(Gtk.SeparatorMenuItem.new())
+
+    def set_label(self, label: str):
+        self._indicator.set_label(label, label)
 
     def notify(self, title: str, message: str, icon: str = 'server'):
         self.__clear_notifications()
         n = Notify.Notification().new(title, message, icon)
         n.show()
-        self.notifications.append(n)
+        self._notifications.append(n)
+
+    def close(self, return_code: int = 0):
+        self._return_code = return_code
+        Gtk.main_quit()
 
     def __clear_notifications(self):
-        for n in self.notifications:
+        for n in self._notifications:
             n.close()
 
     def __cleanup(self):
+        self._indicator.run_dispose()
         self.__clear_notifications()
         Notify.uninit()

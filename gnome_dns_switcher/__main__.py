@@ -21,7 +21,19 @@ def main():
 
     args = parser.parse_args()
 
-    with open(args.config, 'r') as config_file:
+    config_path = args.config
+
+    result = 42 # 42 === reload
+    while result == 42:
+        connections, servers = load_config(config_path)
+        menu = DnsSwitcher(APPINDICATOR_ID, servers, connections)
+        result = menu.open()
+
+    print("Done")
+
+
+def load_config(config_path):
+    with open(config_path, 'r') as config_file:
         config = yaml.safe_load(config_file)
         servers: List[Server] = [Server('DHCP', None, True)]
         for name, ips in config.get('servers', {}).items():
@@ -38,11 +50,10 @@ def main():
                 servers.append(server)
 
         connections = get_connections()
-        filter_by_names = config.get('devices', [])
+        filter_by_names = config.get('devices') or []
         if len(filter_by_names):
             connections = [c for c in connections if c.device in filter_by_names]
-
-    DnsSwitcher(APPINDICATOR_ID, servers, connections)
+    return connections, servers
 
 
 if __name__ == "__main__":

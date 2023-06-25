@@ -66,6 +66,26 @@ devices:
 sudo apt install python3-gi python3-gi-cairo gir1.2-gtk-3.0 gir1.2-appindicator3-0.1
 ```
 
+## Development
+
+### Setup
+Set up virtualenv:
+```shell
+virtualenv venv
+source venv/bin/activate
+```
+
+Install dependencies:
+```shell
+python setup.py install
+pip install vext vext.gi
+```
+
+### Running
+```shell
+python -m gnome_dns_switcher
+```
+
 ### Useful links
 
 - https://gjs-docs.gnome.org/
