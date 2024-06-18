@@ -17,6 +17,7 @@ Supports multiple connections and switching them separately
 
 <details>
 <summary>💻 Screenshots</summary>
+
 ![](./screenshots/menu.png)
 
 
