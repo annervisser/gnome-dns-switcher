@@ -34,17 +34,19 @@ Supports multiple connections and switching them separately
 ## Setup
 Install dependencies
 ```shell
-# If you don't yet have pip3:
-sudo apt install python3-pip
+# Install pipx:
+sudo apt install pipx
+
+# Add pipx path to your .bashrc
+pipx ensurepath
 
 # Install dependencies to run this application
-sudo apt install python3-gi python3-gi-cairo gir1.2-gtk-3.0 gir1.2-appindicator3-0.1
+sudo apt install libcairo2-dev libgirepository1.0-dev python3-gi python3-gi-cairo gir1.2-gtk-3.0 gir1.2-appindicator3-0.1
 ```
 
 Install gnome-dns-switcher
 ```shell
-# sudo so the script is added to $PATH, you can also install normally and fix $PATH :)
-sudo pip3 install gnome-dns-switcher
+pipx install gnome-dns-switcher
 
 # Generate a default configuration
 gnome-dns-switcher generate-config
