@@ -123,4 +123,5 @@ python -m gnome_dns_switcher
 
 ### Useful links
 
-- https://gjs-docs.gnome.org/
+- Alternative: https://extensions.gnome.org/extension/7861/sanad/
+- Api docs: https://gjs-docs.gnome.org/
